@@ -1,0 +1,39 @@
+﻿@page
+@inject SignInManager<IdentityUser> SignInManager
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+
+    SelectList doctors = new SelectList(Model.Doctors, "FullName", "FullName");
+
+}
+
+<div class="text-center">
+    <h1 class="display-4">Добро пожаловать!</h1>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <form method="post">
+            <p>Выберите врача</p>
+
+            @Html.DropDownListFor(model => model.CurrentDoctor, doctors)
+
+            <p>Введите описание справки:</p>
+            <textarea asp-for="Description"></textarea>
+            <input type="submit" value="Далее" />
+        </form>
+    }
+    else
+    {
+        <form action="/Identity/Account/Register" method="get">
+            <p>Выберите врача</p>
+            @Html.DropDownListFor(model => model.CurrentDoctor, doctors)
+
+            <p>Введите описание справки:</p>
+            <textarea name="description"></textarea>
+
+            <input type="submit" value="Далее" />
+        </form>
+    }
+
+
+</div>
